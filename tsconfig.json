@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "pages/components/atoms/button/PrimaryButton.js", "pages/components/atoms/button/MenuIconButton.js", "pages/providers/LoginUserProvider.jsx", "pages/hooks/useAuth.ts", "p", "pages/hooks/useLoginUser.js","ages/hooks/useAllUsers.js", "pages/hooks/useSelectUser.jsx", "pages/hooks/useMessage.jsxs", "pages/hooks/useLoginUser.tsx", "pages/signup.js", "pages/login.js", "pages/_app.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
