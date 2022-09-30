@@ -10,6 +10,7 @@ export type AuthState = {
   isSignedIn: boolean
   isLoading: boolean
   userId: string | undefined
+  userEmail: string | undefined
   userName: string | undefined
   avatarUrl: string | undefined
 }
@@ -22,6 +23,7 @@ const INITIAL_AUTH_STATE: AuthState = {
   isSignedIn: false,
   isLoading: true,
   userId: undefined,
+  userEmail: undefined,
   userName: undefined,
   avatarUrl: undefined,
 }
@@ -40,6 +42,7 @@ export function useAuthState(): AuthState {
           isSignedIn: true,
           isLoading: false,
           userId: user.uid,
+          userEmail: user.email,
           userName: user.displayName || undefined,
           avatarUrl: user.photoURL || undefined,
         })

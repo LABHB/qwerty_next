@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useDisclosure, useRadio, useRadioGroup } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, HStack, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Radio, Stack, Textarea, useDisclosure, useRadio, useRadioGroup } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import { Header } from "../components/Header";
@@ -8,84 +8,10 @@ import {SignInOrOutButton} from "../components/atoms/button/SignInOrOutButton"
 // firestorageからデータを持ってくる
 import { collection, getDocs, getFirestore } from 'firebase/firestore'
 import React, { useContext, useEffect, useState } from "react";
+
+//グローバルステートを利用
 import { AnswerContext } from "../providers/AnswerProvider";
-
-export async function getBooks() {
-  const books = new Array()
-  const db = getFirestore()
-  const booksSnapshot = await getDocs(collection(db, '/books'))
-
-  booksSnapshot.forEach((doc) => {
-    const book = doc.data()
-    books.push({ ...book, id: doc.id })
-  })
-
-  return books
-}
-
-const DEFAULT_OUTPUT = {
-  isLoading: true,
-  books: [],
-}
-
-export function useBooks() {
-  const [output, setOutput] = useState(DEFAULT_OUTPUT)
-
-  useEffect(() => {
-    void (async () => {
-      const books = await getBooks()
-      setOutput({ isLoading: false, books })
-    })()
-  }, [])
-
-  return output
-}
-
-export const BookTable = () => {
-  const { isLoading, books } = useBooks()
-  if (isLoading) return <p>Loading...</p>
-
-  return (
-    <ul>
-      {books.map((book) => (
-        <li key={book.id}>
-          {book.title} / {book.author} / {book.price}
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-// firestorageにデータを追記
-import { doc, setDoc } from 'firebase/firestore'
 import { useRouter } from "next/router";
-
-//以下、firestorageへの追記コード////////////////////////////////////////////
-// asyncにすると機能しなくなる（理由確認できず）ため、
-// 取り急ぎ、asyncを削除して対応
-// 伴って、awaitも削除して対応
-//////////////////////////////////////////////////////////////////////////
-
-// export async function AddBook(book) {
-export function AddBook(book) {
-// function AddBook(book) {
-  const {id, title, author, price} = book
-  const db = getFirestore()
-  const docRef = doc(db, 'books', book.id)
-  // await setDoc(docRef,
-  setDoc(docRef,
-    { title: title, author: author, price: price },
-    { merge: true /* ドキュメントが存在する場合はフィールドを追記 */ }
-  )
-  return (
-    <ul>
-        <li key={book.id}>
-          {book.title} / {book.author} / {book.price}
-        </li>
-    </ul>
-  )
-}
-
 
 
 // 1. Create a component that consumes the `useRadio` hook
@@ -131,7 +57,7 @@ function RadioCardModal(props) {
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
 
-  const {answer2,setAnswer2,answer2_1,setAnswer2_1,answer2_2,setAnswer2_2 } = useContext(AnswerContext);
+  const {answer5,setAnswer5,answer5_1,setAnswer5_1 } = useContext(AnswerContext);
   const router = useRouter();
 
   const handleSubmit = (e) => {
@@ -147,16 +73,15 @@ function RadioCardModal(props) {
       }
     })
     const answer = selectedAnswer.toString();
-    setAnswer2(answer);
-    localStorage.setItem("question2", answer);
+    setAnswer5(answer);
+    localStorage.setItem("question5", answer);
     console.log(answer)
     console.log(freeAnswer[0].value)
 
-    setAnswer2_1(freeAnswer[0].value);
-    localStorage.setItem("question2_1", freeAnswer[0].value);
-    setAnswer2_2(freeAnswer[0].value);
-    localStorage.setItem("question2_2", freeAnswer[1].value); 
-    router.push("/home/question3")    
+    setAnswer5_1(freeAnswer[0].value);
+    localStorage.setItem("question5_1", freeAnswer[0].value);
+ 
+    router.push("/home/question6")    
   }
 
   return (
@@ -190,18 +115,18 @@ function RadioCardModal(props) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>概要を教えてください</ModalHeader>
+          <ModalHeader>その他</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <FormLabel>実施した施策</FormLabel>
+              <FormLabel>代理店に求める条件を記載ください</FormLabel>
               <Textarea size='lg' ref={initialRef} placeholder='First name' />
             </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>施策の結果</FormLabel>
-              <Textarea placeholder='Last name' />
-            </FormControl>
+            {/* <FormControl mt={4}>
+              <FormLabel>Last name</FormLabel>
+              <Input placeholder='Last name' />
+            </FormControl> */}
           </ModalBody>
 
           <ModalFooter>
@@ -218,7 +143,8 @@ function RadioCardModal(props) {
 
 // Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
 function Example() {
-  const options = ['競合調査','自社サービスに関するアンケート', '既存顧客データ分析','広告運用','イベント実施','それ以外']
+  const options = ['レスポンスが速い','実績が豊富', 'オフラインでも相談できる（勤務先が近い）','内製化に向けた体制構築もお願いできる','その他']
+  const option = ['Modal']
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'framework',
@@ -233,6 +159,14 @@ function Example() {
       {options.map((value) => {
         const radio = getRadioProps({ value })
         return (
+          <RadioCard key={value} {...radio}>
+            {value}
+          </RadioCard>
+        )
+      })}
+      {option.map((value) => {
+        const radio = getRadioProps({ value })
+        return (
           <RadioCardModal key={value} {...radio}>
             {value}
           </RadioCardModal>
@@ -242,17 +176,10 @@ function Example() {
   )
 }
 
-export default function Question2() {
+export default function Question5() {
   
-  const {answer1, answer2, setAnswer1, setAnswer2 } = useContext(AnswerContext);
-  const router = useRouter()
-  //更新時にlocalstrageが定義されていないとエラー
-  useEffect(() => {
-    const saveAnswer1 = localStorage.getItem("question1");
-    const saveAnswer2 = localStorage.getItem("answer2");
-    setAnswer1(saveAnswer1); 
-    setAnswer2(saveAnswer2);
-  },[setAnswer1,setAnswer2]);
+  const {answer5,setAnswer5 } = useContext(AnswerContext);
+  const router = useRouter();
 
   const handleSubmit = (e) => {
     const allAnswers = document.getElementsByName('framework')
@@ -266,46 +193,37 @@ export default function Question2() {
       }
     })
     const answer = selectedAnswer.toString();
-    setAnswer2(answer);
-    localStorage.setItem("question2", answer);
+    setAnswer5(answer);
+    localStorage.setItem("question5", answer);
     console.log(answer)
-    router.push("/home/question3")    
+    router.push("/home/question6")    
   }
-
-
+  
   return (
     <>
-    <form onSubmit={handleSubmit} >
     <Header>
     </Header>
     <div>
        <Head>
-        <title>2番目の質問</title>
+        <title>5番目の質問</title>
        </Head>
-      <h1>これまでに実施されていて、分かっている項目があれば、ご教示ください。</h1>
+      <h1>Q お願いする代理店に求める条件を選択して下さい。</h1>
       <h3>※詳細は別途ヒアリングさせていただきますので、概要を記載ください。</h3>
       <Example />
-      <BookTable />
       <Button      
         bg="orange.400"
         color="white"
         _hover={{ opacity: 0.8 }}
+        variant="outlined"
         onClick={handleSubmit}
       >
-              次へ進む
+              回答を終える
       </Button>
-      {answer1}
-      {answer2}
       <div>
-        <p>固定値であれば、データ追記可能</p>
-        <AddBook id="id-5" title="book.title2" author="book.author2" price="book.price2" />
-      </div>
-      <div>
-        <Link href="/">ホームへ戻る</Link>
+        <Link href="/">最後の質問に進む</Link>
       </div>
       <SignInOrOutButton />
     </div>
-    </form>
     </>
   );
 }

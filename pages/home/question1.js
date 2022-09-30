@@ -1,4 +1,4 @@
-import { Box, Button, HStack, useRadio, useRadioGroup } from "@chakra-ui/react";
+import { Box, Button, HStack, useRadio, useRadioGroup, VStack } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import { Header } from "../components/Header";
@@ -67,7 +67,7 @@ function Example() {
   // }
 
   return (
-    <HStack {...group}>
+    <VStack {...group}>
       {options.map((value) => {
         const radio = getRadioProps({ value })
         return (
@@ -77,7 +77,7 @@ function Example() {
           </RadioCard>
         )
       })}
-    </HStack>
+    </VStack>
   )
 }
 
@@ -112,9 +112,18 @@ export default function Question1() {
     // localStorage.setItem("answer2", JSON.stringify(rawAnswer2));
     // console.log(allAnswer00)
     console.log(answer)
-    router.push("/home/question2")    
+    if(answer == "ザックリとした目的があるので、ターゲットを含めて、方針から考えたい。"){
+      router.push("/home/question1_1")    
+    }else if(answer == "具体的なターゲットは決まっているので、アプローチ方法から検討したい。"){
+      router.push("/home/question2_1")    
+    }else if(answer == "ターゲット、メディア、クリエーティブの見当はついていて、具体的な運用方法・知見を知りたい。"){
+      router.push("/home/question3_1")    
+    }else if(answer == "実際に広告運用をしているが、運用効率をもっと上げたい。"){
+      router.push("/home/question4_1")    
+    }else if(answer == "サービス利用者獲得数は維持できているが、継続率が低くなっていて、改善したい。"){
+      router.push("/home/question5_1")    
+    }
   }
-
 
 
   return (

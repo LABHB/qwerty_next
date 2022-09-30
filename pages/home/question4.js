@@ -1,4 +1,4 @@
-import { Box, Button, HStack, useRadio, useRadioGroup } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Heading, HStack, Input, InputGroup, InputLeftElement, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Radio, Stack, Text, Textarea, useDisclosure, useRadio, useRadioGroup } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import { Header } from "../components/Header";
@@ -7,71 +7,13 @@ import {SignInOrOutButton} from "../components/atoms/button/SignInOrOutButton"
 
 // firestorageからデータを持ってくる
 import { collection, getDocs, getFirestore } from 'firebase/firestore'
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 //グローバルステートを利用
 import { AnswerContext } from "../providers/AnswerProvider";
 import { useRouter } from "next/router";
+import { CheckIcon } from "@chakra-ui/icons";
 
-
-// 1. Create a component that consumes the `useRadio` hook
-function RadioCard(props) {
-  const { getInputProps, getCheckboxProps } = useRadio(props)
-
-  const input = getInputProps()
-  const checkbox = getCheckboxProps()
-
-  return (
-    <Box as='label'>
-      <input {...input} />
-      <Box
-        {...checkbox}
-        cursor='pointer'
-        borderWidth='1px'
-        borderRadius='md'
-        boxShadow='md'
-        _checked={{
-          bg: 'teal.600',
-          color: 'white',
-          borderColor: 'teal.600',
-        }}
-        _focus={{
-          boxShadow: 'outline',
-        }}
-        px={5}
-        py={3}
-      >
-        {props.children}
-      </Box>
-    </Box>
-  )
-}
-
-// Step 2: Use the `useRadioGroup` hook to control a group of custom radios.
-function Example() {
-  const options = ['レスポンスが速い','実績が豊富', 'オフラインでも相談できる（勤務先が近い）','内製化に向けた体制構築もお願いできる','その他']
-
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    name: 'framework',
-    defaultValue: 'react',
-    onChange: console.log,
-  })
-
-  const group = getRootProps()
-
-  return (
-    <HStack {...group}>
-      {options.map((value) => {
-        const radio = getRadioProps({ value })
-        return (
-          <RadioCard key={value} {...radio}>
-            {value}
-          </RadioCard>
-        )
-      })}
-    </HStack>
-  )
-}
 
 export default function Question4() {
   
@@ -79,21 +21,11 @@ export default function Question4() {
   const router = useRouter();
 
   const handleSubmit = (e) => {
-    const allAnswers = document.getElementsByName('framework')
-    var allAnswerArray = Object.keys(allAnswers).map(function (key) {
-      return allAnswers[key];
-  });
-  var selectedAnswer = [];
-  allAnswerArray.map((answer)=>{
-      if(answer.checked){
-        selectedAnswer.push(answer.value);
-      }
-    })
-    const answer = selectedAnswer.toString();
+    const answer = document.getElementsByClassName('chakra-input')[0].value
     setAnswer4(answer);
     localStorage.setItem("question4", answer);
     console.log(answer)
-    router.push("/home/answer")    
+    router.push("/home/question5")    
   }
   
   return (
@@ -102,11 +34,27 @@ export default function Question4() {
     </Header>
     <div>
        <Head>
-        <title>4番目の質問</title>
+        <title>4つめの質問</title>
        </Head>
-      <h1>Q お願いする代理店に求める条件を選択して下さい。</h1>
-      <h3>※詳細は別途ヒアリングさせていただきますので、概要を記載ください。</h3>
-      <Example />
+
+      <div>
+        <Heading as='h3' size='md'>Q 現状、参考にしたいと考えている事例があれば、教えてください。</Heading>
+        <Text color="gray.400" as="i">
+          例. 化粧品A社の新商品Bのキャンペーン。<br/>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SNSにて広告を実施しており、無料サンプル配布も同時に行うことで、<br/>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;興味関心を持ってくれた見込み顧客のデータ獲得にも成功していた。</Text>
+      </div>
+          <Input
+          placeholder="参考URLなどもあれば、合わせてこちらに記述ください"
+          htmlSize={4}
+          width='50%'
+          height="300px"
+          size="sm"
+          />
+          <div>
+            {/* <Input type="file"></Input> */}
+          </div>
+          <div>
       <Button      
         bg="orange.400"
         color="white"
@@ -114,8 +62,9 @@ export default function Question4() {
         variant="outlined"
         onClick={handleSubmit}
       >
-              回答を終える
+              次へ進む
       </Button>
+          </div>
       <div>
         <Link href="/">ホームへ戻る</Link>
       </div>
