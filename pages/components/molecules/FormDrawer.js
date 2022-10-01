@@ -159,7 +159,7 @@ export function Contact({userId,userEmail,answer1,answer1_1, answer2, answer2_1,
                 <InputGroup borderColor="#E0E1E7">
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<BsPerson color="gray.800" />}
+                    // children={<BsPerson color="gray.800" />} 
                   />
                   <Input type="text" size="sm" placeholder='山田 太郎' />
                 </InputGroup>
@@ -169,7 +169,7 @@ export function Contact({userId,userEmail,answer1,answer1_1, answer2, answer2_1,
                 <InputGroup borderColor="#E0E1E7">
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<MdOutlineEmail color="gray.800" />}
+                    // children={<MdOutlineEmail color="gray.800" />}
                   />
                   <Input type="text" size="sm" value={userEmail}/>
                 </InputGroup>
@@ -179,7 +179,7 @@ export function Contact({userId,userEmail,answer1,answer1_1, answer2, answer2_1,
                 <InputGroup borderColor="#E0E1E7">
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<MdPhone color="gray.800" />}
+                    // children={<MdPhone color="gray.800" />}
                   />
                   <Input type="text" size="sm" placeholder='080-1234-5678'/>
                 </InputGroup>
@@ -189,7 +189,7 @@ export function Contact({userId,userEmail,answer1,answer1_1, answer2, answer2_1,
                 <InputGroup borderColor="#E0E1E7">
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<MdLocationCity color="gray.800" />}
+                    // children={<MdLocationCity color="gray.800" />}
                   />
                   <Input type="text" size="sm" placeholder='(株)QWERTY'/>
                 </InputGroup>
