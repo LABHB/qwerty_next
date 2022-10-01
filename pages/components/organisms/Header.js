@@ -10,27 +10,27 @@ import {
   Link,
   useDisclosure
 } from "@chakra-ui/react";
-import { memo, useCallback, VFC } from "react";
+import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuIconButton } from "../../atoms/button/MenuIconButton";
 import { MenuDrawer } from "../../molecules/MenuDrawer";
 
-export const Header: VFC = memo(() => {
+export const Header = memo(function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
   const onClickHome = useCallback(() => {
     navigate("/home");
     onClose();
-  }, []);
+  }, [navigate, onClose]);
   const onClickUserManagement = useCallback(() => {
     navigate("/home/user_management");
     onClose();
-  }, []);
+  }, [navigate, onClose]);
   const onClickSetting = useCallback(() => {
     navigate("/home/setting");
     onClose();
-  }, []);
+  }, [navigate, onClose]);
 
   return (
     <>

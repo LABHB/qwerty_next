@@ -18,14 +18,14 @@ function Layout({children, home}) {
       <header className={styles.header}>
         {home ? ( //Topの場合のヘッダー
           <>
-        <Image src="/logo.png" className={utilStyles.borderCircle}/>
+        <Image src="/logo.png" alt="logoimage" className={utilStyles.borderCircle}/>
         {/* 仮ロゴ */}
         <h1 className={`${utilStyles.heading2Xl} ${styles.headerHomeImage}`}>{name}</h1>
           </>
         ) :
         (//Top以外の場合のヘッダー
         <>
-        <img src="/logo.png" className={utilStyles.borderCircle}/>
+        <Image src="/logo.png" alt="logoimage" className={utilStyles.borderCircle}/>
         {/* 仮ロゴ */}
         <h1 className={`${utilStyles.heading2Xl}`}>{name}</h1>
         </>
